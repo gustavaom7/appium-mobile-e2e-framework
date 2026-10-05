@@ -12,9 +12,6 @@ concurrency:
   group: android-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  API_LEVEL: 34
-
 jobs:
   static:
     name: Lint & typecheck
@@ -30,9 +27,12 @@ jobs:
       - run: npm run typecheck
 
   e2e:
-    name: E2E (Android emulator, API ${{ env.API_LEVEL }})
+    name: E2E (Android emulator, API ${{ matrix.api-level }})
     needs: static
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        api-level: [34]
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
@@ -63,13 +63,13 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-${{ env.API_LEVEL }}
+          key: avd-${{ matrix.api-level }}
 
       - name: Create AVD snapshot
         if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: ${{ env.API_LEVEL }}
+          api-level: ${{ matrix.api-level }}
           target: google_apis
           arch: x86_64
           force-avd-creation: false
@@ -84,7 +84,7 @@ jobs:
           TAG: ${{ (github.event_name == 'push' || github.event_name == 'pull_request') && '@smoke' || '' }}
           TIMEOUT_FACTOR: 2
         with:
-          api-level: ${{ env.API_LEVEL }}
+          api-level: ${{ matrix.api-level }}
           target: google_apis
           arch: x86_64
           force-avd-creation: false
