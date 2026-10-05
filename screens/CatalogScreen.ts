@@ -1,4 +1,4 @@
-import { $, $$ } from '@wdio/globals';
+import { $$ } from '@wdio/globals';
 import { BaseScreen } from './BaseScreen.ts';
 import { byId } from '../utils/selectors.ts';
 
@@ -14,7 +14,8 @@ class CatalogScreen extends BaseScreen {
   /** Titles of the product cards currently rendered (the grid is virtualized: on-screen only). */
   async getVisibleProductNames(): Promise<string[]> {
     await this.waitForDisplayed();
-    await $(byId('store item text')).waitForDisplayed();
+    // `$` is strict in WDIO 10 (throws on >1 match); wait on the first card of the list instead.
+    await this.itemTitles[0].waitForDisplayed();
     return this.itemTitles.map((el) => el.getText());
   }
 
