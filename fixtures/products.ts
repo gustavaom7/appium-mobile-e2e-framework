@@ -1,0 +1,9 @@
+/** Catalog shipped with the app (src/data/inventoryData.ts). */
+export const PRODUCTS = [
+  { id: 1, name: 'Sauce Labs Backpack', price: 29.99 },
+  { id: 2, name: 'Sauce Labs Bike Light', price: 9.99 },
+  { id: 3, name: 'Sauce Labs Bolt T-Shirt', price: 15.99 },
+  { id: 4, name: 'Sauce Labs Fleece Jacket', price: 49.99 },
+  { id: 5, name: 'Sauce Labs Onesie', price: 7.99 },
+  { id: 6, name: 'Test.allTheThings() T-Shirt', price: 15.99 },
+] as const;

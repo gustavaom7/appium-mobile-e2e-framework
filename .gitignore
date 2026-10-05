@@ -1,0 +1,8 @@
+node_modules/
+apps/*
+!apps/.gitkeep
+reports/
+logs/
+*.log
+.DS_Store
+.appium-mcp/
