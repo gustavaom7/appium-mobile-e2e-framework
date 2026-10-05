@@ -3,7 +3,7 @@
 ## Phase 1: Foundation (written; lint + typecheck green, awaiting first emulator run)
 - WebdriverIO 10 + Appium 3 + TypeScript, Mocha, lint/typecheck
 - Shared/Android/iOS configs, pinned app release download
-- Screen Objects: Login, Catalog, CheckoutAddress, AppHeader
+- Screen Objects: Login, Catalog, CheckoutAddress; `resetApp()` for isolation
 - Specs: app launch (@smoke), login happy path (@smoke) + 4 data-driven negative cases
 - Android CI on emulator with failure evidence
 

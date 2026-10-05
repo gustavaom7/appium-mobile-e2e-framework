@@ -13,7 +13,7 @@ Cross-platform mobile end-to-end suite built with **Appium 3**, **WebdriverIO 10
 | One codebase for Android + iOS | `utils/selectors.ts`, `screens/` | ⏳ Android: awaiting first CI run · ⚠️ iOS: config ready, not yet run |
 | Screen Object Model | `screens/`, `screens/components/` | ✅ |
 | State setup without replaying the UI (deep links) | `utils/deeplink.ts` | ✅ |
-| Test isolation inside one Appium session | `AppHeader.resetAppState()` | ✅ |
+| Test isolation inside one Appium session | `utils/app.ts` (`mobile: clearApp` + relaunch) | ✅ |
 | Data-driven negative tests | `tests/auth/login.spec.ts` | ✅ |
 | CI on a real Android emulator (KVM + AVD cache) | `.github/workflows/android.yml` | ⏳ awaiting first run |
 | Failure evidence (screenshot + page source + JUnit) | `config/wdio.shared.conf.ts` | ✅ |
@@ -36,10 +36,10 @@ $('~Login button')           // RN buttons: "<Title> button"
 
 ```
 config/        app.ts (app id, release), wdio.shared/android/ios.conf.ts
-screens/       BaseScreen + one class per screen; components/ for shared UI (AppHeader)
+screens/       BaseScreen + one class per screen
 tests/         smoke/, auth/ (catalog/, cart/, checkout/ next) tagged @smoke / @regression
 fixtures/      users and products (data the app ships with)
-utils/         selectors.ts, deeplink.ts
+utils/         selectors.ts, deeplink.ts, app.ts (reset)
 scripts/       download-app.ts (fetches the pinned app release)
 ```
 

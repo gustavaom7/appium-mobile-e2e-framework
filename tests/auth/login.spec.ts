@@ -1,8 +1,8 @@
 import { expect } from '@wdio/globals';
-import AppHeader from '../../screens/components/AppHeader.ts';
 import CheckoutAddressScreen from '../../screens/CheckoutAddressScreen.ts';
 import LoginScreen from '../../screens/LoginScreen.ts';
 import { LOGIN_ERRORS, USERS } from '../../fixtures/users.ts';
+import { resetApp } from '../../utils/app.ts';
 import { openDeepLink } from '../../utils/deeplink.ts';
 
 const INVALID_LOGINS = [
@@ -14,7 +14,7 @@ const INVALID_LOGINS = [
 
 describe('Login', () => {
   beforeEach(async () => {
-    await AppHeader.resetAppState();
+    await resetApp();
     await openDeepLink('login');
   });
 

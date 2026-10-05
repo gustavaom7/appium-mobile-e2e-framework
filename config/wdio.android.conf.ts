@@ -18,7 +18,7 @@ export const config: WebdriverIO.Config = {
       'appium:autoGrantPermissions': true,
       'appium:newCommandTimeout': 240,
       // One clean install per spec file (WDIO opens one session per file);
-      // between tests inside a file, state is reset in-app (see AppHeader.resetAppState).
+      // between tests inside a file, utils/app.ts resetApp() clears the app data.
       'appium:noReset': false,
     },
   ],

@@ -23,7 +23,7 @@ npm run lint && npm run typecheck    # run both before every commit
 - Use `byPlatform()` only where the UI differs (Android drawer vs iOS tab bar). Use `byText()` for copy with no id (error messages).
 - WDIO 10 selectors are strict: `$()` throws when it matches more than one element. For lists (store items, cart rows) use `$$()` and index (`$$(sel)[0]`).
 - Selectors live in `screens/`; specs never call `$`/`$$` (lint-enforced). No `driver.pause()` (lint-enforced): wait on a screen root or element.
-- Navigation for setup uses deep links (`utils/deeplink.ts`, routes from the app's `src/navigation/Linking.ts`). Reset state with `AppHeader.resetAppState()` (long-press on the logo wipes the persisted store).
+- Navigation for setup uses deep links (`utils/deeplink.ts`, routes from the app's `src/navigation/Linking.ts`). Reset state with `resetApp()` (`utils/app.ts`: `mobile: clearApp` + relaunch). Do not use the app's long-press-logo reset: it keeps the user logged in, and the login route only exists while logged out.
 - After a successful login with no pending destination, the app lands on the checkout address screen. This is app behavior, not a bug.
 - Tags in `describe`/`it` titles (`@smoke`, `@regression`); filter with `TAG` / `SEM_TAG` env vars.
 - Imports use explicit `.ts` extensions (ESM + `allowImportingTsExtensions`).
