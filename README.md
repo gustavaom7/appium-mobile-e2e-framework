@@ -10,12 +10,12 @@ Cross-platform mobile end-to-end suite built with **Appium 3**, **WebdriverIO 10
 
 | Capability | Where | Status |
 |---|---|---|
-| One codebase for Android + iOS | `utils/selectors.ts`, `screens/` | ⏳ Android: awaiting first CI run · ⚠️ iOS: config ready, not yet run |
+| One codebase for Android + iOS | `utils/selectors.ts`, `screens/` | ✅ Android green in CI · ⚠️ iOS: config ready, not yet run |
 | Screen Object Model | `screens/`, `screens/components/` | ✅ |
 | State setup without replaying the UI (deep links) | `utils/deeplink.ts` | ✅ |
 | Test isolation inside one Appium session | `utils/app.ts` (`mobile: clearApp` + relaunch) | ✅ |
 | Data-driven negative tests | `tests/auth/login.spec.ts` | ✅ |
-| CI on a real Android emulator (KVM + AVD cache) | `.github/workflows/android.yml` | ⏳ awaiting first run |
+| CI on a real Android emulator (KVM + AVD cache) | `.github/workflows/android.yml` | ✅ |
 | Failure evidence (screenshot + page source + JUnit) | `config/wdio.shared.conf.ts` | ✅ |
 | Lint rules that enforce the architecture | `eslint.config.js` | ✅ no `pause()`, no selectors in specs |
 | Gestures, webview context, interruptions, iOS CI, Allure, AI-assisted generation | — | 🗓️ [roadmap](docs/roadmap.md) |

@@ -1,6 +1,6 @@
 # Roadmap
 
-## Phase 1: Foundation (written; lint + typecheck green, awaiting first emulator run)
+## Phase 1: Foundation ✅ (green on the Android emulator in CI; iOS not run yet)
 - WebdriverIO 10 + Appium 3 + TypeScript, Mocha, lint/typecheck
 - Shared/Android/iOS configs, pinned app release download
 - Screen Objects: Login, Catalog, CheckoutAddress; `resetApp()` for isolation
