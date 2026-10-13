@@ -6,6 +6,13 @@ export const SAUCE_USERS = {
   lockedOut: 'locked_out_user',
 } as const;
 
+export const SAUCE_LOGIN_ERRORS = {
+  usernameRequired: 'Epic sadface: Username is required',
+  passwordRequired: 'Epic sadface: Password is required',
+  lockedOut: 'Epic sadface: Sorry, this user has been locked out.',
+  noMatch: 'Epic sadface: Username and password do not match any user in this service',
+} as const;
+
 /** `slug` is the suffix of the item's data-test ids (e.g. add-to-cart-sauce-labs-backpack). */
 export const SAUCE_PRODUCTS = {
   backpack: { slug: 'sauce-labs-backpack', name: 'Sauce Labs Backpack', price: 29.99 },
