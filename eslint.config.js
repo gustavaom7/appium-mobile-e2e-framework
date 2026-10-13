@@ -26,14 +26,14 @@ export default [
     },
   },
   {
-    // Screen Objects own the selectors; specs talk to screens, not to the driver.
+    // Screen/Page Objects own the selectors; specs talk to them, not to the driver.
     files: ['tests/**/*.ts'],
     rules: {
       'no-restricted-syntax': [
         'error',
         {
           selector: "CallExpression[callee.name=/^\\$\\$?$/]",
-          message: 'Locate elements in a Screen Object (screens/), not in the spec.',
+          message: 'Locate elements in a Screen Object (screens/) or Page Object (web/pages/), not in the spec.',
         },
       ],
     },

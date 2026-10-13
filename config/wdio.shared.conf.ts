@@ -20,6 +20,8 @@ export const sharedConfig: WebdriverIO.Config = {
   runner: 'local',
   tsConfigPath: './tsconfig.json',
   specs: ['../tests/**/*.spec.ts'],
+  // Native app configs skip the mobile-web suite; wdio.android-web.conf.ts runs only that.
+  exclude: ['../tests/web/**'],
   maxInstances: 1,
   capabilities: [],
   logLevel: 'warn',

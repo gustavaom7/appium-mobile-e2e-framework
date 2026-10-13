@@ -12,5 +12,5 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true
   },
-  "include": ["config/**/*.ts", "screens/**/*.ts", "tests/**/*.ts", "fixtures/**/*.ts", "utils/**/*.ts", "scripts/**/*.ts"]
+  "include": ["config/**/*.ts", "screens/**/*.ts", "tests/**/*.ts", "fixtures/**/*.ts", "utils/**/*.ts", "scripts/**/*.ts", "web/**/*.ts"]
 }

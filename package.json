@@ -29,6 +29,8 @@
     "test:android": "wdio run config/wdio.android.conf.ts",
     "test:ios": "wdio run config/wdio.ios.conf.ts",
     "smoke:android": "TAG=@smoke wdio run config/wdio.android.conf.ts",
+    "test:android-web": "wdio run config/wdio.android-web.conf.ts",
+    "smoke:android-web": "TAG=@smoke wdio run config/wdio.android-web.conf.ts",
     "app:android": "tsx scripts/download-app.ts android",
     "app:ios": "tsx scripts/download-app.ts ios",
     "drivers:ios": "appium driver install xcuitest",
