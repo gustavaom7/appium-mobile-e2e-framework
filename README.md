@@ -11,7 +11,7 @@ Cross-platform mobile end-to-end suite built with **Appium 3**, **WebdriverIO 10
 | Capability | Where | Status |
 |---|---|---|
 | One codebase for Android + iOS | `utils/selectors.ts`, `screens/` | ✅ Android green in CI · ⚠️ iOS: config ready, not yet run |
-| Screen Object Model | `screens/`, `screens/components/` | ✅ |
+| Screen Object Model | `screens/` | ✅ |
 | State setup without replaying the UI (deep links) | `utils/deeplink.ts` | ✅ |
 | Test isolation inside one Appium session | `utils/app.ts` (`mobile: clearApp` + relaunch) | ✅ |
 | Data-driven negative tests | `tests/auth/login.spec.ts` | ✅ |
@@ -48,8 +48,8 @@ scripts/       download-app.ts (fetches the pinned app release)
 Prerequisites: Node 22+, Java 17+, Android SDK with an emulator (`ANDROID_HOME` set); for iOS, macOS with Xcode.
 
 ```bash
-npm install
-npm run drivers                 # appium driver install uiautomator2 + xcuitest
+npm install                     # also installs the Appium uiautomator2 driver (devDependency)
+npm run drivers:ios             # iOS only: appium driver install xcuitest
 npm run app:android             # downloads the pinned My Demo App APK into apps/
 # start an emulator (Android Studio or `emulator -avd <name>`)
 npm run test:android            # full suite
@@ -58,7 +58,7 @@ npm run smoke:android           # @smoke only
 
 iOS (simulator): `npm run app:ios && npm run test:ios`. Set `IOS_DEVICE_NAME` / `IOS_PLATFORM_VERSION` to match an installed simulator.
 
-Useful env vars: `TAG=@smoke` / `SEM_TAG=@slow` (filter), `TIMEOUT_FACTOR=2` (slow machines/CI), `ANDROID_APP` / `IOS_APP` (custom build path), `APP_RELEASE` (another My Demo App release).
+Useful env vars: `TAG=@smoke` / `SEM_TAG=@slow` (include / exclude, combinable), `TIMEOUT_FACTOR=2` (slow machines/CI), `ANDROID_APP` / `IOS_APP` (custom build path), `APP_RELEASE` (another My Demo App release).
 
 Troubleshooting: `npm run doctor:android` / `npm run doctor:ios` run Appium's driver doctor.
 

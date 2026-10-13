@@ -9,7 +9,8 @@ Appium 3 + WebdriverIO 10 + TypeScript (ESM) mobile E2E suite against Sauce Labs
 ## Commands
 
 ```bash
-npm install && npm run drivers      # deps + Appium drivers (uiautomator2, xcuitest)
+npm install                          # deps + uiautomator2 driver (devDependency)
+npm run drivers:ios                  # xcuitest, iOS only
 npm run app:android | app:ios        # download the app build into apps/
 npm run test:android | test:ios      # full suite (needs a running emulator/simulator)
 npm run smoke:android                # TAG=@smoke
@@ -25,5 +26,5 @@ npm run lint && npm run typecheck    # run both before every commit
 - Selectors live in `screens/`; specs never call `$`/`$$` (lint-enforced). No `driver.pause()` (lint-enforced): wait on a screen root or element.
 - Navigation for setup uses deep links (`utils/deeplink.ts`, routes from the app's `src/navigation/Linking.ts`). Reset state with `resetApp()` (`utils/app.ts`: `mobile: clearApp` + relaunch). Do not use the app's long-press-logo reset: it keeps the user logged in, and the login route only exists while logged out.
 - After a successful login with no pending destination, the app lands on the checkout address screen. This is app behavior, not a bug.
-- Tags in `describe`/`it` titles (`@smoke`, `@regression`); filter with `TAG` / `SEM_TAG` env vars.
+- Tags in `describe`/`it` titles (`@smoke`, `@regression`); filter with `TAG` (include) / `SEM_TAG` (exclude), combinable.
 - Imports use explicit `.ts` extensions (ESM + `allowImportingTsExtensions`).

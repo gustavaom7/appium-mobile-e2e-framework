@@ -40,10 +40,8 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
+      # Also installs the uiautomator2 driver: it is a devDependency, pinned in the lockfile.
       - run: npm ci
-
-      - name: Install Appium driver
-        run: npx appium driver install uiautomator2
 
       - name: Download app under test
         run: npm run app:android
