@@ -1,0 +1,12 @@
+{
+  "android": {
+    "platformName": "Android",
+    "appium:automationName": "UiAutomator2",
+    "appium:deviceName": "Android Emulator",
+    "appium:appPackage": "com.saucelabs.mydemoapp.rn",
+    "appium:appActivity": ".MainActivity",
+    "appium:noReset": true,
+    "appium:autoGrantPermissions": true,
+    "appium:newCommandTimeout": 600
+  }
+}

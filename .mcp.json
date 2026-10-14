@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "appium-mcp": {
+      "command": "npx",
+      "args": ["-y", "appium-mcp@1.97.1"],
+      "env": {
+        "ANDROID_HOME": "${ANDROID_HOME:-/opt/homebrew/share/android-commandlinetools}",
+        "CAPABILITIES_CONFIG": "config/mcp-capabilities.json",
+        "SCREENSHOTS_DIR": "reports/mcp/screenshots",
+        "PAGE_SOURCES_DIR": "reports/mcp/page-sources"
+      }
+    }
+  }
+}
