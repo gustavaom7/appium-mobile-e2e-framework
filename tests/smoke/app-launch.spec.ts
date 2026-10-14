@@ -1,10 +1,12 @@
 import { expect } from '@wdio/globals';
 import CatalogScreen from '../../screens/CatalogScreen.ts';
 import { PRODUCTS } from '../../fixtures/products.ts';
+import { coldStartTimeout } from '../../utils/app.ts';
 
 describe('App launch @smoke', () => {
   it('opens on the catalog with products listed', async () => {
-    await CatalogScreen.waitForDisplayed();
+    // First launch of a fresh install (session start): the slowest screen of the suite.
+    await CatalogScreen.waitForDisplayed(coldStartTimeout());
 
     const names = await CatalogScreen.getVisibleProductNames();
 
