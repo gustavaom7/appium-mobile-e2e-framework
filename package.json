@@ -40,6 +40,7 @@
     "doctor:ios": "appium driver doctor xcuitest",
     "report": "allure generate reports/allure-results -o reports/allure-report",
     "report:open": "allure open reports/allure-report",
+    "ai:edit-stats": "tsx scripts/ai-edit-stats.ts",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit"
   },
