@@ -170,3 +170,50 @@ jobs:
             reports/
             logs/
           retention-days: 14
+
+  report:
+    name: Allure report
+    needs: [e2e, e2e-web]
+    # Published from main only (push + nightly); PRs keep each job's artifacts. Runs even when tests failed:
+    # that is when the report matters most.
+    if: always() && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+
+      # A job that died before running tests has no results: skip it instead of failing the report.
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: android-reports
+          path: artifacts/native
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: android-web-reports
+          path: artifacts/web
+
+      - name: Generate one report for both suites
+        run: |
+          dirs=$(ls -d artifacts/*/reports/allure-results 2>/dev/null || true)
+          if [ -z "$dirs" ]; then echo "No Allure results to report"; exit 1; fi
+          npx allure generate $dirs -o allure-report --name "My Demo App (native) + SauceDemo (mobile web)"
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: allure-report
+      - id: deploy
+        uses: actions/deploy-pages@v4

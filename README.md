@@ -16,7 +16,7 @@ Cross-platform mobile end-to-end suite built with **Appium 3**, **WebdriverIO 10
 | Test isolation inside one Appium session | `utils/app.ts` (`mobile: clearApp` + relaunch) | ✅ |
 | Data-driven negative tests | `tests/auth/login.spec.ts` | ✅ |
 | CI on a real Android emulator (KVM + AVD cache) | `.github/workflows/android.yml` | ✅ |
-| Failure evidence (screenshot + page source + JUnit) | `config/wdio.shared.conf.ts` | ✅ |
+| Failure evidence (screenshot + page source + screen recording) in an Allure report, JUnit for CI | `utils/evidence.ts`, `config/wdio.shared.conf.ts` | ✅ local · ⏳ GitHub Pages publish pending first run |
 | Lint rules that enforce the architecture | `eslint.config.js` | ✅ no `pause()`, no selectors in specs |
 | Mobile web in the emulator's real Chrome: touch, on-screen keyboard, rotation | `config/wdio.android-web.conf.ts`, `web/`, `tests/web/` | ✅ green in CI (`E2E (Android Chrome)`) |
 | Gestures (touch drawing, swipe, scroll to element) | `tests/device/gestures.spec.ts`, `utils/gestures.ts` | ✅ local |
@@ -77,17 +77,20 @@ npm run test:android            # full suite
 npm run smoke:android           # @smoke only
 npm run test:android-web        # SauceDemo in the emulator's Chrome (chromedriver auto-downloaded)
 npm run smoke:android-web       # web @smoke only
+npm run report && npm run report:open   # Allure report of the last run (reports/allure-report)
 ```
 
 iOS (simulator): `npm run app:ios && npm run test:ios`. Set `IOS_DEVICE_NAME` / `IOS_PLATFORM_VERSION` to match an installed simulator.
 
-Useful env vars: `TAG=@smoke` / `SEM_TAG=@slow` (include / exclude, combinable), `TIMEOUT_FACTOR=2` (slow machines/CI), `ANDROID_APP` / `IOS_APP` (custom build path), `APP_RELEASE` (another My Demo App release).
+Useful env vars: `TAG=@smoke` / `SEM_TAG=@slow` (include / exclude, combinable), `TIMEOUT_FACTOR=2` (slow machines/CI), `NO_VIDEO=1` (skip screen recording), `ANDROID_APP` / `IOS_APP` (custom build path), `APP_RELEASE` (another My Demo App release).
 
 Troubleshooting: `npm run doctor:android` / `npm run doctor:ios` run Appium's driver doctor.
 
 ## CI
 
 `.github/workflows/android.yml`: lint + typecheck, then two jobs on an API 34 emulator (`reactivecircus/android-emulator-runner`, KVM enabled, AVD snapshot cached): the native suite and the mobile-web suite (`E2E (Android Chrome)`). CI runs `@smoke` only, on every trigger (push, PR, nightly, manual); the `@regression` suites run locally with `npm run test:android` / `npm run test:android-web`. Reports, screenshots, page sources and the Appium log are uploaded as an artifact.
+
+Failed tests carry a screenshot, the page source and a screen recording (the device records every test; the video is kept only on failure). From `main` (push and nightly) a last job merges both suites' Allure results into one report and publishes it to GitHub Pages.
 
 ## Related repos
 

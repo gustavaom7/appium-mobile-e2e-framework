@@ -32,10 +32,10 @@ SauceDemo in the emulator's real Chrome, complementing the Playwright repo's dev
 - [x] Interruptions: background/foreground, screen lock. Rotation: not applicable, the app is locked to portrait (covered in the mobile-web suite)
 - [ ] iOS simulator job on `macos-latest` (nightly + manual)
 
-## Phase 4: Reporting & scale
-- [ ] Allure with screenshots/video (`startRecordingScreen`), published to GitHub Pages
-- [ ] Optional Slack notification
-- [ ] Optional cloud device farm config (`wdio.cloud.conf.ts`), enabled only when secrets exist
+## Phase 4: Reporting & scale 🟡 (local report done; GitHub Pages publish pending its first run)
+- [x] Allure report with screenshot, page source and screen recording on failure (`npm run report`)
+- [ ] Published to GitHub Pages from `main` (job `Allure report` added, first deploy pending)
+- Dropped: Slack notification, cloud device farm config (no credentials to run it; untested code stays out)
 
 ## Phase 5: AI-assisted workflow
 - [ ] Appium MCP server in `.mcp.json` to explore screens live
