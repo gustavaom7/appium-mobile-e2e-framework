@@ -18,6 +18,8 @@ npm run test:android-web | smoke:android-web   # SauceDemo in the emulator's Chr
 npm run report && npm run report:open           # Allure report of the last run; NO_VIDEO=1 skips recording
 npx wdio run config/wdio.android.conf.ts --spec tests/auth/login.spec.ts   # one file
 npm run lint && npm run typecheck    # run both before every commit
+# Lockfile changes: use the project's Node 22 / npm 10 (.nvmrc). npm 11 (Node 23+) writes optional
+# platform deps (sharp) that npm 10 in CI rejects; if needed: npx npm@10 install --package-lock-only
 ```
 
 ## Architecture rules
