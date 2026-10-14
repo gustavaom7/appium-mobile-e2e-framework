@@ -25,11 +25,11 @@ SauceDemo in the emulator's real Chrome, complementing the Playwright repo's dev
 - [x] Menu navigation (destinations, login/logout, reset state); Android drawer vs iOS tab bar via `byPlatform`, iOS side not run yet
 - App bugs found and documented in CLAUDE.md: Add To Cart on deep-linked product pages, payment errors cleared on submit, crash on activity recreation
 
-## Phase 3: Mobile-specific depth
-- [ ] Gestures: scroll to element, swipe, drawing canvas (W3C actions)
-- [ ] NATIVE ↔ WEBVIEW context switch (Webview screen)
-- [ ] Geolocation (`setGeoLocation`) and permissions
-- [ ] Interruptions: background/foreground, rotation
+## Phase 3: Mobile-specific depth (green on the local emulator; iOS job still open)
+- [x] Gestures: scroll to element, swipe, drawing canvas (W3C touch actions, canvas pixels read in its WebView)
+- [x] NATIVE ↔ WEBVIEW context switch (Webview screen, driven with the mobile-web Page Objects)
+- [x] Geolocation (`setGeoLocation`: show, follow, stop observing) and permissions (re-granted after reset)
+- [x] Interruptions: background/foreground, screen lock. Rotation: not applicable, the app is locked to portrait (covered in the mobile-web suite)
 - [ ] iOS simulator job on `macos-latest` (nightly + manual)
 
 ## Phase 4: Reporting & scale
