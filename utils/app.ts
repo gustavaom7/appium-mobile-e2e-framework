@@ -16,6 +16,7 @@ const APP_STATE_RUNNING_IN_FOREGROUND = 4;
 export async function resetApp(): Promise<void> {
   if (driver.isAndroid) await sendAppToBackground();
   await driver.execute('mobile: clearApp', driver.isAndroid ? { appId: APP_ID } : { bundleId: APP_ID });
+  if (driver.isAndroid) await waitForBroadcastsToSettle();
   await driver.activateApp(APP_ID);
   await CatalogScreen.waitForDisplayed();
 }
@@ -32,4 +33,14 @@ async function sendAppToBackground(): Promise<void> {
     async () => (await driver.queryAppState(APP_ID)) !== APP_STATE_RUNNING_IN_FOREGROUND,
     { timeout: 10_000, interval: 100, timeoutMsg: `${APP_ID} did not leave the foreground` },
   );
+}
+
+/**
+ * `pm clear` also queues package broadcasts. On a slow emulator (CI) they can land seconds after the app
+ * is back up, and the keyboard-layout reload they trigger is a configuration change: Android recreates
+ * the activity, and My Demo App crashes on recreation (react-native-screens "Screen fragments should
+ * never be restored"). Wait for every broadcast queue to drain before relaunching.
+ */
+async function waitForBroadcastsToSettle(): Promise<void> {
+  await driver.execute('mobile: shell', { command: 'am', args: ['wait-for-broadcast-idle'], timeout: 60_000 });
 }
