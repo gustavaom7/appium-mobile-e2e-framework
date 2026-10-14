@@ -88,7 +88,8 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          script: npm run test:android
+          # The runner executes each script line on its own: keep the logcat dump on the same line as the tests.
+          script: npm run test:android || (adb logcat -d > logs/logcat.txt; adb logcat -d -b crash > logs/logcat-crash.txt; exit 1)
 
       - name: Upload reports
         if: always()
@@ -157,7 +158,8 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          script: npm run test:android-web
+          # The runner executes each script line on its own: keep the logcat dump on the same line as the tests.
+          script: npm run test:android-web || (adb logcat -d > logs/logcat.txt; adb logcat -d -b crash > logs/logcat-crash.txt; exit 1)
 
       - name: Upload reports
         if: always()
