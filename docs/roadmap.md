@@ -32,9 +32,9 @@ SauceDemo in the emulator's real Chrome, complementing the Playwright repo's dev
 - [x] Interruptions: background/foreground, screen lock. Rotation: not applicable, the app is locked to portrait (covered in the mobile-web suite)
 - [ ] iOS simulator job on `macos-latest` (nightly + manual)
 
-## Phase 4: Reporting & scale 🟡 (local report done; GitHub Pages publish pending its first run)
+## Phase 4: Reporting & scale ✅ ([report on GitHub Pages](https://gustavaom7.github.io/appium-mobile-e2e-framework/))
 - [x] Allure report with screenshot, page source and screen recording on failure (`npm run report`)
-- [ ] Published to GitHub Pages from `main` (job `Allure report` added, first deploy pending)
+- [x] Published to GitHub Pages from `main` (job `Allure report`, both suites merged into one report)
 - Dropped: Slack notification, cloud device farm config (no credentials to run it; untested code stays out)
 
 ## Phase 5: AI-assisted workflow ✅ (tooling in place; first generated screen pending)
