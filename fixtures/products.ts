@@ -7,3 +7,6 @@ export const PRODUCTS = [
   { id: 5, name: 'Sauce Labs Onesie', price: 7.99 },
   { id: 6, name: 'Test.allTheThings() T-Shirt', price: 15.99 },
 ] as const;
+
+/** Sort options of the catalog's sort modal; the value is the option's accessibility id (src/utils/Sorting.ts). */
+export type SortOption = 'nameAsc' | 'nameDesc' | 'priceAsc' | 'priceDesc';
