@@ -36,3 +36,9 @@ npm run lint && npm run typecheck    # run both before every commit
 - Tags in `describe`/`it` titles (`@smoke`, `@regression`); filter with `TAG` (include) / `SEM_TAG` (exclude), combinable.
 - CI runs `@smoke` only (every trigger); `@regression` runs locally. Tag a test `@smoke` only if it must gate every PR: keep that set small.
 - Imports use explicit `.ts` extensions (ESM + `allowImportingTsExtensions`).
+
+## AI workflow
+
+- Appium MCP (`.mcp.json`, guide in `docs/appium-mcp.md`) is for exploring screens, not for running the suite. Never keep an MCP session open while WDIO runs: both drive the device's UiAutomator2 server.
+- New screens: `/explore-and-generate-screens`. Commit the draft untouched with an `AI-Draft:` trailer, fix in later commits (`npm run ai:edit-stats` measures the difference).
+- Red CI run: `/triage-ci-failure`. Classify from evidence; Jira drafts are handed to the user, never filed.

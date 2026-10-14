@@ -37,8 +37,8 @@ SauceDemo in the emulator's real Chrome, complementing the Playwright repo's dev
 - [ ] Published to GitHub Pages from `main` (job `Allure report` added, first deploy pending)
 - Dropped: Slack notification, cloud device farm config (no credentials to run it; untested code stays out)
 
-## Phase 5: AI-assisted workflow
-- [ ] Appium MCP server in `.mcp.json` to explore screens live
-- [ ] `explore-and-generate-screens` skill: screen map → draft Screen Object + spec
-- [ ] Failure triage into Jira-ready bug drafts
-- [ ] Track how much human editing generated code needs
+## Phase 5: AI-assisted workflow ✅ (tooling in place; first generated screen pending)
+- [x] Appium MCP server in `.mcp.json` to explore screens live (`docs/appium-mcp.md`)
+- [x] `explore-and-generate-screens` skill: screen map → draft Screen Object + spec, draft committed untouched
+- [x] `triage-ci-failure` skill: evidence-first triage, Jira-ready drafts for app bugs
+- [x] `npm run ai:edit-stats`: share of AI-drafted lines kept vs edited by humans

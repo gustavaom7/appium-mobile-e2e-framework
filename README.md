@@ -22,7 +22,8 @@ Cross-platform mobile end-to-end suite built with **Appium 3**, **WebdriverIO 10
 | Gestures (touch drawing, swipe, scroll to element) | `tests/device/gestures.spec.ts`, `utils/gestures.ts` | ✅ local |
 | NATIVE ↔ WEBVIEW context switch | `tests/hybrid/webview.spec.ts`, `utils/context.ts` | ✅ local |
 | Mocked GPS, interruptions (background, screen lock) | `tests/device/` | ✅ local |
-| iOS CI, Allure, AI-assisted generation | — | 🗓️ [roadmap](docs/roadmap.md) |
+| AI-assisted workflow: Appium MCP exploration, screen-object generation, CI failure triage, edit stats | `.mcp.json`, `.claude/skills/`, [`docs/appium-mcp.md`](docs/appium-mcp.md) | ✅ |
+| iOS CI | — | 🗓️ [roadmap](docs/roadmap.md) |
 
 ## How the cross-platform selectors work
 
