@@ -3,7 +3,6 @@ import { APP_ID } from '../config/app.ts';
 import CatalogScreen from '../screens/CatalogScreen.ts';
 
 const ANDROID_KEYCODE_HOME = 3;
-const APP_STATE_RUNNING_IN_FOREGROUND = 4;
 
 /**
  * Wipes the app's data and relaunches it on the catalog: logged out, empty cart.
@@ -25,14 +24,30 @@ export async function resetApp(): Promise<void> {
  * Android race: `pm clear` on a *visible* activity arms a ~1s "remove-task" timer that kills
  * whatever process the old task holds when it fires, including the one `activateApp` just started.
  * The app is left as a blank window with no process, and UiAutomator2 times out looking for the
- * accessibility root. Clearing a stopped (backgrounded) activity does not arm the timer.
+ * accessibility root. Clearing a STOPPED activity does not arm the timer.
+ * Wait for STOPPED itself: app state ("not in foreground") flips while the activity is still
+ * PAUSED and animating out, which is not enough.
  */
 async function sendAppToBackground(): Promise<void> {
   await driver.pressKeyCode(ANDROID_KEYCODE_HOME);
   await driver.waitUntil(
-    async () => (await driver.queryAppState(APP_ID)) !== APP_STATE_RUNNING_IN_FOREGROUND,
-    { timeout: 10_000, interval: 100, timeoutMsg: `${APP_ID} did not leave the foreground` },
+    async () => {
+      const state = await appActivityState();
+      return state === undefined || state === 'STOPPED';
+    },
+    { timeout: 10_000, interval: 200, timeoutMsg: `${APP_ID} activity did not reach STOPPED` },
   );
+}
+
+/** Lifecycle state of the app's activity per `dumpsys activity activities`; undefined when it has none. */
+async function appActivityState(): Promise<string | undefined> {
+  const dump = (await driver.execute('mobile: shell', {
+    command: 'dumpsys',
+    args: ['activity', 'activities'],
+  })) as string;
+  const record = dump.search(new RegExp(`\\* Hist\\s+#\\d+: ActivityRecord\\{[^}]*${APP_ID.replace(/\./g, '\\.')}/`));
+  if (record < 0) return undefined;
+  return /\bstate=([A-Z_]+)/.exec(dump.slice(record))?.[1];
 }
 
 /**
