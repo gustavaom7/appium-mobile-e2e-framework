@@ -17,12 +17,13 @@ SauceDemo in the emulator's real Chrome, complementing the Playwright repo's dev
 - [x] Rotation mid-checkout
 - [x] `E2E (Android Chrome)` job green in CI (smoke on the PR, full suite on a manual run)
 
-## Phase 2: Coverage
-- [ ] Catalog sort (4 options, data-driven) and product details
-- [ ] Cart: add/remove/quantity via counter, cart badge
-- [ ] Full checkout: address → payment → review → complete, field validation table
-- [ ] Deep links with payload (`cart/id=1&amount=2&color=black`) to seed the cart
-- [ ] Navigation component: Android drawer vs iOS tab bar (`byPlatform`)
+## Phase 2: Coverage ✅ (green on the local emulator; @regression runs locally, CI runs @smoke)
+- [x] Catalog sort (4 options, data-driven) and product details (all 6 products, counter)
+- [x] Cart: add with color/amount, row counter, remove, empty cart, badge
+- [x] Full checkout: address → payment → review → complete, field validation table
+- [x] Deep links with payload (`cart/id=1&amount=2&color=black`) to seed the cart
+- [x] Menu navigation (destinations, login/logout, reset state); Android drawer vs iOS tab bar via `byPlatform`, iOS side not run yet
+- App bugs found and documented in CLAUDE.md: Add To Cart on deep-linked product pages, payment errors cleared on submit, crash on activity recreation
 
 ## Phase 3: Mobile-specific depth
 - [ ] Gestures: scroll to element, swipe, drawing canvas (W3C actions)

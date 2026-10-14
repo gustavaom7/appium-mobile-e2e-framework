@@ -12,8 +12,9 @@ export abstract class BaseScreen {
     return $(byId(this.rootId));
   }
 
-  async waitForDisplayed(): Promise<void> {
-    await this.root.waitForDisplayed({ timeoutMsg: `"${this.rootId}" was not displayed` });
+  /** `timeout` overrides the configured waitforTimeout, for the few waits known to be slower (cold starts). */
+  async waitForDisplayed(timeout?: number): Promise<void> {
+    await this.root.waitForDisplayed({ timeout, timeoutMsg: `"${this.rootId}" was not displayed` });
   }
 
   async waitForHidden(): Promise<void> {
@@ -23,4 +24,13 @@ export abstract class BaseScreen {
   async isDisplayed(): Promise<boolean> {
     return this.root.isDisplayed();
   }
+}
+
+/** A screen known only by its root id, for checks that just need to land on it (e.g. menu destinations). */
+export function screenWithRoot(rootId: string): BaseScreen {
+  return new (class extends BaseScreen {
+    constructor() {
+      super(rootId);
+    }
+  })();
 }

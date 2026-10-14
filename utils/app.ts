@@ -15,9 +15,14 @@ const ANDROID_KEYCODE_HOME = 3;
 export async function resetApp(): Promise<void> {
   if (driver.isAndroid) await sendAppToBackground();
   await driver.execute('mobile: clearApp', driver.isAndroid ? { appId: APP_ID } : { bundleId: APP_ID });
-  if (driver.isAndroid) await waitForBroadcastsToSettle();
+  if (driver.isAndroid) {
+    await regrantPermissions();
+    await waitForBroadcastsToSettle();
+  }
   await driver.activateApp(APP_ID);
-  await CatalogScreen.waitForDisplayed();
+  // A launch right after `pm clear` is a full cold start: React Native re-unpacks its native libraries
+  // into the wiped data dir before the JS even runs. Measured 1.4-3s normally, up to 19s on a loaded host.
+  await CatalogScreen.waitForDisplayed((driver.options.waitforTimeout ?? 15_000) * 3);
 }
 
 /**
@@ -48,6 +53,14 @@ async function appActivityState(): Promise<string | undefined> {
   const record = dump.search(new RegExp(`\\* Hist\\s+#\\d+: ActivityRecord\\{[^}]*${APP_ID.replace(/\./g, '\\.')}/`));
   if (record < 0) return undefined;
   return /\bstate=([A-Z_]+)/.exec(dump.slice(record))?.[1];
+}
+
+/**
+ * `pm clear` also revokes runtime permissions, undoing the session's `autoGrantPermissions`: camera and
+ * location screens (QR code, geo location) would then open behind the system permission dialog.
+ */
+async function regrantPermissions(): Promise<void> {
+  await driver.execute('mobile: changePermissions', { permissions: 'all', appPackage: APP_ID, action: 'grant' });
 }
 
 /**

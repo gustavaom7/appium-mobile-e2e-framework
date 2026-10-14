@@ -25,3 +25,20 @@ export const byText = (text: string): string => {
     ios: `-ios predicate string:type == "XCUIElementTypeStaticText" AND label == "${escaped}"`,
   });
 };
+
+/**
+ * The text element inside a container: RN puts ids on wrapping views whose copy lives in a child
+ * (screen headers, the product counter). Use as `$(byId('container header')).$(textChild())`.
+ */
+export const textChild = (): string =>
+  byPlatform({ android: 'android.widget.TextView', ios: '-ios class chain:**/XCUIElementTypeStaticText' });
+
+/**
+ * A button of a native alert. Android may render the label in caps ("LOG OUT"), so it matches
+ * case-insensitively; iOS keeps the label as written.
+ */
+export const alertButton = (label: string): string =>
+  byPlatform({
+    android: `android=new UiSelector().className("android.widget.Button").textMatches("(?i)${label}")`,
+    ios: `-ios class chain:**/XCUIElementTypeButton[\`label == "${label}"\`]`,
+  });
