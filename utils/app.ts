@@ -20,7 +20,9 @@ export async function resetApp(): Promise<void> {
     await waitForBroadcastsToSettle();
   }
   await driver.activateApp(APP_ID);
-  await CatalogScreen.waitForDisplayed();
+  // A launch right after `pm clear` is a full cold start: React Native re-unpacks its native libraries
+  // into the wiped data dir before the JS even runs. Measured 1.4-3s normally, up to 19s on a loaded host.
+  await CatalogScreen.waitForDisplayed((driver.options.waitforTimeout ?? 15_000) * 3);
 }
 
 /**
