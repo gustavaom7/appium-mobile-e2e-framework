@@ -5,7 +5,7 @@ import CatalogScreen from '../../screens/CatalogScreen.ts';
 import ProductScreen from '../../screens/ProductScreen.ts';
 import { PRODUCTS, type ProductColor } from '../../fixtures/products.ts';
 import { resetApp } from '../../utils/app.ts';
-import { openDeepLink } from '../../utils/deeplink.ts';
+import { cartPath, openDeepLink } from '../../utils/deeplink.ts';
 
 const [BACKPACK, BIKE_LIGHT] = PRODUCTS;
 
@@ -51,9 +51,8 @@ describe('Cart @regression', () => {
   });
 
   it('updates totals from the row counter and drops a removed product', async () => {
-    await addFromProductPage(BACKPACK, 1);
-    await addFromProductPage(BIKE_LIGHT, 1);
-    await CartAccess.open();
+    // Setup through a cart deep link (fast); adding from the product page is covered above.
+    await openDeepLink(cartPath([{ productId: BACKPACK.id }, { productId: BIKE_LIGHT.id }]));
 
     await (await CartScreen.row(BACKPACK.name)).increase();
     await expect(CartScreen.totalItems).toHaveText('3 items');
@@ -67,8 +66,7 @@ describe('Cart @regression', () => {
   });
 
   it('shows the empty cart once the last product is removed', async () => {
-    await addFromProductPage(BACKPACK, 1);
-    await CartAccess.open();
+    await openDeepLink(cartPath([{ productId: BACKPACK.id }]));
 
     await (await CartScreen.row(BACKPACK.name)).remove();
 
