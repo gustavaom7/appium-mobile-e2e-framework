@@ -1,5 +1,8 @@
-import { mkdir, writeFile } from 'node:fs/promises';
+import { rm } from 'node:fs/promises';
 import { join } from 'node:path';
+import { collectEvidence, startVideo } from '../utils/evidence.ts';
+
+const ALLURE_RESULTS = './reports/allure-results';
 
 /**
  * Settings shared by every platform. Platform files (wdio.android/ios.conf.ts) only add capabilities.
@@ -49,26 +52,22 @@ export const sharedConfig: WebdriverIO.Config = {
   reporters: [
     'spec',
     ['junit', { outputDir: './reports/junit', outputFileFormat: ({ cid }) => `results-${cid}.xml` }],
+    // WDIO command steps and auto-screenshots off: the report shows tests, not every driver call;
+    // failure evidence is attached explicitly in afterTest.
+    ['allure', { outputDir: ALLURE_RESULTS, disableWebdriverStepsReporting: true, disableWebdriverScreenshotsReporting: true }],
   ],
 
-  /**
-   * Evidence on failure: screenshot + page source, attached next to the JUnit report.
-   * Best effort: if the session died (the usual reason a test failed), a throw here would hide the real error.
-   */
+  /** One report per run: results from a previous run would show up as stale tests. */
+  onPrepare: async function () {
+    await rm(ALLURE_RESULTS, { recursive: true, force: true });
+  },
+
+  beforeTest: async function () {
+    await startVideo();
+  },
+
+  /** Evidence on failure (screenshot, page source, video) as files and Allure attachments; see utils/evidence.ts. */
   afterTest: async function (test, _context, { passed }) {
-    if (passed) return;
-    const name = `${test.parent} - ${test.title}`.replace(/[^\w-]+/g, '_').slice(0, 120);
-    const dir = join(process.cwd(), 'reports', 'failures');
-    await mkdir(dir, { recursive: true });
-    try {
-      await driver.saveScreenshot(join(dir, `${name}.png`));
-    } catch (err) {
-      console.warn(`Could not save failure screenshot: ${(err as Error).message}`);
-    }
-    try {
-      await writeFile(join(dir, `${name}.xml`), await driver.getPageSource());
-    } catch (err) {
-      console.warn(`Could not save failure page source: ${(err as Error).message}`);
-    }
+    await collectEvidence(`${test.parent} - ${test.title}`, passed);
   },
 };

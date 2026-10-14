@@ -15,6 +15,7 @@ npm run app:android | app:ios        # download the app build into apps/
 npm run test:android | test:ios      # full suite (needs a running emulator/simulator)
 npm run smoke:android                # TAG=@smoke
 npm run test:android-web | smoke:android-web   # SauceDemo in the emulator's Chrome (tests/web/)
+npm run report && npm run report:open           # Allure report of the last run; NO_VIDEO=1 skips recording
 npx wdio run config/wdio.android.conf.ts --spec tests/auth/login.spec.ts   # one file
 npm run lint && npm run typecheck    # run both before every commit
 ```
