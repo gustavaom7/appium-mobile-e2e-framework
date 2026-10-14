@@ -1,8 +1,5 @@
+import { chromedriverAutodownload } from './chromedriver.ts';
 import { sharedConfig } from './wdio.shared.conf.ts';
-
-// Fetches the chromedriver matching the emulator's Chrome (needs relaxedSecurity, set in the shared config).
-// Real uiautomator2 capability, missing from @wdio/types: kept apart so it skips the excess-property check.
-const chromedriverAutodownload: Record<string, unknown> = { 'appium:chromedriverAutodownload': true };
 
 /**
  * SauceDemo (web) in the real Chrome of the Android emulator, driven through Appium + chromedriver.

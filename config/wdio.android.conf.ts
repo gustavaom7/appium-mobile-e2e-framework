@@ -1,5 +1,6 @@
 import { resolve } from 'node:path';
 import { APP_ID } from './app.ts';
+import { chromedriverAutodownload } from './chromedriver.ts';
 import { sharedConfig } from './wdio.shared.conf.ts';
 
 export const config: WebdriverIO.Config = {
@@ -17,6 +18,8 @@ export const config: WebdriverIO.Config = {
       'appium:appWaitActivity': '*',
       'appium:autoGrantPermissions': true,
       'appium:newCommandTimeout': 240,
+      // The Webview screen embeds Android System WebView; its WEBVIEW context needs a matching chromedriver.
+      ...chromedriverAutodownload,
       // One clean install per spec file (WDIO opens one session per file);
       // between tests inside a file, utils/app.ts resetApp() clears the app data.
       'appium:noReset': false,
