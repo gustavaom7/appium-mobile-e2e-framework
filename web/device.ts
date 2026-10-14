@@ -30,3 +30,15 @@ export async function hideKeyboard(): Promise<void> {
 export async function visibleViewportHeight(): Promise<number> {
   return browser.execute(() => window.visualViewport?.height ?? window.innerHeight);
 }
+
+/** Rotates the device, then waits until Chrome has re-laid out the page for the new orientation. */
+export async function rotate(orientation: 'LANDSCAPE' | 'PORTRAIT'): Promise<void> {
+  await inNativeContext(() => driver.setOrientation(orientation));
+  await browser.waitUntil(
+    async () => {
+      const { width, height } = await browser.execute(() => ({ width: window.innerWidth, height: window.innerHeight }));
+      return orientation === 'LANDSCAPE' ? width > height : height > width;
+    },
+    { timeoutMsg: `Page layout did not switch to ${orientation}` },
+  );
+}
