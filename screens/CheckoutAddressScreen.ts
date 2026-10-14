@@ -28,6 +28,11 @@ class CheckoutAddressScreen extends BaseScreen {
     }
   }
 
+  /** The input of a field, to read back what was typed. */
+  field(field: AddressField) {
+    return $(inputId(FIELD_LABELS[field]));
+  }
+
   async submit(): Promise<void> {
     await dismissKeyboard();
     await $(buttonId('To Payment')).click();
