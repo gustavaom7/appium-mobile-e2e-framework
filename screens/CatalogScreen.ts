@@ -1,6 +1,6 @@
-import { $$ } from '@wdio/globals';
+import { $, $$ } from '@wdio/globals';
 import { BaseScreen } from './BaseScreen.ts';
-import { byId } from '../utils/selectors.ts';
+import { byId, byText } from '../utils/selectors.ts';
 
 class CatalogScreen extends BaseScreen {
   constructor() {
@@ -19,15 +19,12 @@ class CatalogScreen extends BaseScreen {
     return this.itemTitles.map((el) => el.getText());
   }
 
+  /** Cards below the fold are not in the tree until scrolled to (virtualized grid), so scroll first. */
   async openProduct(name: string): Promise<void> {
-    const titles = await this.itemTitles.getElements();
-    for (const title of titles) {
-      if ((await title.getText()) === name) {
-        await title.click();
-        return;
-      }
-    }
-    throw new Error(`Product "${name}" is not on screen`);
+    await this.waitForDisplayed();
+    const title = $(byText(name));
+    await title.scrollIntoView({ maxScrolls: 5 });
+    await title.click();
   }
 }
 

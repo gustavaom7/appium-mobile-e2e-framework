@@ -4,15 +4,24 @@ import { join } from 'node:path';
 /**
  * Settings shared by every platform. Platform files (wdio.android/ios.conf.ts) only add capabilities.
  *
- * Tag filtering: TAG=@smoke / SEM_TAG=@slow (same convention as the Playwright repo).
+ * Tag filtering: TAG=@smoke / SEM_TAG=@slow (same convention as the Playwright repo), alone or together.
+ * Mocha turns a string grep into a RegExp tested against the full title, so both become lookaheads.
  */
-const grep = process.env.TAG ?? process.env.SEM_TAG;
+const escapeRegExp = (s: string): string => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const grep =
+  process.env.TAG || process.env.SEM_TAG
+    ? '^' +
+      (process.env.TAG ? `(?=.*${escapeRegExp(process.env.TAG)})` : '') +
+      (process.env.SEM_TAG ? `(?!.*${escapeRegExp(process.env.SEM_TAG)})` : '')
+    : undefined;
 const timeoutFactor = Number(process.env.TIMEOUT_FACTOR ?? 1);
 
 export const sharedConfig: WebdriverIO.Config = {
   runner: 'local',
   tsConfigPath: './tsconfig.json',
   specs: ['../tests/**/*.spec.ts'],
+  // Native app configs skip the mobile-web suite; wdio.android-web.conf.ts runs only that.
+  exclude: ['../tests/web/**'],
   maxInstances: 1,
   capabilities: [],
   logLevel: 'warn',
@@ -35,20 +44,31 @@ export const sharedConfig: WebdriverIO.Config = {
   mochaOpts: {
     ui: 'bdd',
     timeout: 120_000 * timeoutFactor,
-    ...(grep ? { grep, invert: !process.env.TAG && Boolean(process.env.SEM_TAG) } : {}),
+    ...(grep ? { grep } : {}),
   },
   reporters: [
     'spec',
     ['junit', { outputDir: './reports/junit', outputFileFormat: ({ cid }) => `results-${cid}.xml` }],
   ],
 
-  /** Evidence on failure: screenshot + page source, attached next to the JUnit report. */
+  /**
+   * Evidence on failure: screenshot + page source, attached next to the JUnit report.
+   * Best effort: if the session died (the usual reason a test failed), a throw here would hide the real error.
+   */
   afterTest: async function (test, _context, { passed }) {
     if (passed) return;
     const name = `${test.parent} - ${test.title}`.replace(/[^\w-]+/g, '_').slice(0, 120);
     const dir = join(process.cwd(), 'reports', 'failures');
     await mkdir(dir, { recursive: true });
-    await driver.saveScreenshot(join(dir, `${name}.png`));
-    await writeFile(join(dir, `${name}.xml`), await driver.getPageSource());
+    try {
+      await driver.saveScreenshot(join(dir, `${name}.png`));
+    } catch (err) {
+      console.warn(`Could not save failure screenshot: ${(err as Error).message}`);
+    }
+    try {
+      await writeFile(join(dir, `${name}.xml`), await driver.getPageSource());
+    } catch (err) {
+      console.warn(`Could not save failure page source: ${(err as Error).message}`);
+    }
   },
 };
