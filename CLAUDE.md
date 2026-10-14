@@ -33,4 +33,5 @@ npm run lint && npm run typecheck    # run both before every commit
 - Checkout payment: a format error (bad card checksum, expired date) shows once the value is complete, but tapping Review Order clears the message while still blocking the form. Assert the error before submitting.
 - After a successful login with no pending destination, the app lands on the checkout address screen. This is app behavior, not a bug.
 - Tags in `describe`/`it` titles (`@smoke`, `@regression`); filter with `TAG` (include) / `SEM_TAG` (exclude), combinable.
+- CI runs `@smoke` only (every trigger); `@regression` runs locally. Tag a test `@smoke` only if it must gate every PR: keep that set small.
 - Imports use explicit `.ts` extensions (ESM + `allowImportingTsExtensions`).

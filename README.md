@@ -55,7 +55,7 @@ Login uses the `session-username` cookie (the `storageState` equivalent) and tes
 config/        app.ts (app id, release), wdio.shared/android/ios.conf.ts
 screens/       BaseScreen + one class per screen
 web/           mobile web: pages/ (Page Objects, data-test selectors), session.ts, gestures.ts, device.ts
-tests/         smoke/, auth/ (catalog/, cart/, checkout/ next), web/ (SauceDemo) tagged @smoke / @regression
+tests/         smoke/, auth/, catalog/, cart/, checkout/, web/ (SauceDemo); tagged @smoke (CI) / @regression (local)
 fixtures/      users and products (data the app ships with), saucedemo.ts
 utils/         selectors.ts, deeplink.ts, app.ts (reset)
 scripts/       download-app.ts (fetches the pinned app release)
@@ -84,7 +84,7 @@ Troubleshooting: `npm run doctor:android` / `npm run doctor:ios` run Appium's dr
 
 ## CI
 
-`.github/workflows/android.yml`: lint + typecheck, then two jobs on an API 34 emulator (`reactivecircus/android-emulator-runner`, KVM enabled, AVD snapshot cached): the native suite and the mobile-web suite (`E2E (Android Chrome)`). Push/PR run `@smoke`; the nightly run and manual dispatches run everything. Reports, screenshots, page sources and the Appium log are uploaded as an artifact.
+`.github/workflows/android.yml`: lint + typecheck, then two jobs on an API 34 emulator (`reactivecircus/android-emulator-runner`, KVM enabled, AVD snapshot cached): the native suite and the mobile-web suite (`E2E (Android Chrome)`). CI runs `@smoke` only, on every trigger (push, PR, nightly, manual); the `@regression` suites run locally with `npm run test:android` / `npm run test:android-web`. Reports, screenshots, page sources and the Appium log are uploaded as an artifact.
 
 ## Related repos
 

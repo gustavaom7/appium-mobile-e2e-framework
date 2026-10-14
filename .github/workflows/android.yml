@@ -5,7 +5,7 @@ on:
     branches: [main]
   pull_request:
   schedule:
-    - cron: '17 5 * * *' # nightly full regression
+    - cron: '17 5 * * *' # nightly smoke: catches drift in the emulator image, Chrome or the app release
   workflow_dispatch:
 
 concurrency:
@@ -78,8 +78,8 @@ jobs:
       - name: Run tests
         uses: reactivecircus/android-emulator-runner@v2
         env:
-          # Smoke on push/PR, everything on the nightly and manual runs.
-          TAG: ${{ (github.event_name == 'push' || github.event_name == 'pull_request') && '@smoke' || '' }}
+          # CI runs @smoke only, on every trigger; @regression runs locally (npm run test:android / test:android-web).
+          TAG: '@smoke'
           TIMEOUT_FACTOR: 2
         with:
           api-level: ${{ matrix.api-level }}
@@ -148,8 +148,8 @@ jobs:
       - name: Run tests
         uses: reactivecircus/android-emulator-runner@v2
         env:
-          # Smoke on push/PR, everything on the nightly and manual runs.
-          TAG: ${{ (github.event_name == 'push' || github.event_name == 'pull_request') && '@smoke' || '' }}
+          # CI runs @smoke only, on every trigger; @regression runs locally (npm run test:android / test:android-web).
+          TAG: '@smoke'
           TIMEOUT_FACTOR: 2
         with:
           api-level: ${{ env.API_LEVEL }}
