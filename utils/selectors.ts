@@ -25,3 +25,10 @@ export const byText = (text: string): string => {
     ios: `-ios predicate string:type == "XCUIElementTypeStaticText" AND label == "${escaped}"`,
   });
 };
+
+/**
+ * The text element inside a container: RN puts ids on wrapping views whose copy lives in a child
+ * (screen headers, the product counter). Use as `$(byId('container header')).$(textChild())`.
+ */
+export const textChild = (): string =>
+  byPlatform({ android: 'android.widget.TextView', ios: '-ios class chain:**/XCUIElementTypeStaticText' });
