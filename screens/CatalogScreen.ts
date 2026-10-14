@@ -1,4 +1,4 @@
-import { $, $$ } from '@wdio/globals';
+import { $, $$, driver } from '@wdio/globals';
 import { BaseScreen } from './BaseScreen.ts';
 import { byId, byText } from '../utils/selectors.ts';
 import type { SortOption } from '../fixtures/products.ts';
@@ -41,6 +41,12 @@ class CatalogScreen extends BaseScreen {
     await optionRow.waitForDisplayed();
     await optionRow.click();
     await optionRow.waitForDisplayed({ reverse: true });
+  }
+
+  /** Finger swipe over the grid: "up" moves the content up (reveals later cards), "down" goes back. */
+  async swipeGrid(direction: 'up' | 'down'): Promise<void> {
+    await this.waitForDisplayed();
+    await driver.swipe({ direction, percent: 0.8 });
   }
 
   /** Cards below the fold are not in the tree until scrolled to (virtualized grid), so scroll first. */
