@@ -7,7 +7,7 @@
 - Specs: app launch (@smoke), login happy path (@smoke) + 4 data-driven negative cases
 - Android CI on emulator with failure evidence
 
-## Mobile web 🟡 (green on the local emulator; CI job added, not yet green)
+## Mobile web ✅ (green in CI: `E2E (Android Chrome)`, full suite)
 SauceDemo in the emulator's real Chrome, complementing the Playwright repo's device emulation.
 - [x] `wdio.android-web.conf.ts` (Chrome, auto-downloaded chromedriver), Page Objects in `web/pages/`
 - [x] Cookie login (`session-username`) and cookie + localStorage isolation
@@ -15,7 +15,7 @@ SauceDemo in the emulator's real Chrome, complementing the Playwright repo's dev
 - [x] Menu, logout and reset by real touch (W3C touch pointer)
 - [x] On-screen keyboard: viewport shrink, native dismissal (NATIVE_APP context)
 - [x] Rotation mid-checkout
-- [ ] `E2E (Android Chrome)` job green in CI (then this phase becomes ✅)
+- [x] `E2E (Android Chrome)` job green in CI (smoke on the PR, full suite on a manual run)
 
 ## Phase 2: Coverage
 - [ ] Catalog sort (4 options, data-driven) and product details

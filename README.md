@@ -18,7 +18,7 @@ Cross-platform mobile end-to-end suite built with **Appium 3**, **WebdriverIO 10
 | CI on a real Android emulator (KVM + AVD cache) | `.github/workflows/android.yml` | ✅ |
 | Failure evidence (screenshot + page source + JUnit) | `config/wdio.shared.conf.ts` | ✅ |
 | Lint rules that enforce the architecture | `eslint.config.js` | ✅ no `pause()`, no selectors in specs |
-| Mobile web in the emulator's real Chrome: touch, on-screen keyboard, rotation | `config/wdio.android-web.conf.ts`, `web/`, `tests/web/` | ✅ green on the local emulator · ⏳ CI job added, first run pending |
+| Mobile web in the emulator's real Chrome: touch, on-screen keyboard, rotation | `config/wdio.android-web.conf.ts`, `web/`, `tests/web/` | ✅ green in CI (`E2E (Android Chrome)`) |
 | Gestures, webview context, interruptions, iOS CI, Allure, AI-assisted generation | — | 🗓️ [roadmap](docs/roadmap.md) |
 
 ## How the cross-platform selectors work
