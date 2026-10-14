@@ -32,3 +32,13 @@ export const byText = (text: string): string => {
  */
 export const textChild = (): string =>
   byPlatform({ android: 'android.widget.TextView', ios: '-ios class chain:**/XCUIElementTypeStaticText' });
+
+/**
+ * A button of a native alert. Android may render the label in caps ("LOG OUT"), so it matches
+ * case-insensitively; iOS keeps the label as written.
+ */
+export const alertButton = (label: string): string =>
+  byPlatform({
+    android: `android=new UiSelector().className("android.widget.Button").textMatches("(?i)${label}")`,
+    ios: `-ios class chain:**/XCUIElementTypeButton[\`label == "${label}"\`]`,
+  });

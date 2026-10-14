@@ -24,3 +24,12 @@ export abstract class BaseScreen {
     return this.root.isDisplayed();
   }
 }
+
+/** A screen known only by its root id, for checks that just need to land on it (e.g. menu destinations). */
+export function screenWithRoot(rootId: string): BaseScreen {
+  return new (class extends BaseScreen {
+    constructor() {
+      super(rootId);
+    }
+  })();
+}
