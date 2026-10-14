@@ -1,6 +1,7 @@
-import { $, driver } from '@wdio/globals';
+import { $ } from '@wdio/globals';
 import { BaseScreen } from './BaseScreen.ts';
 import { buttonId, byText, inputId } from '../utils/selectors.ts';
+import { dismissKeyboard } from '../utils/keyboard.ts';
 
 class LoginScreen extends BaseScreen {
   constructor() {
@@ -22,8 +23,7 @@ class LoginScreen extends BaseScreen {
     await this.waitForDisplayed();
     if (username) await this.usernameInput.setValue(username);
     if (password) await this.passwordInput.setValue(password);
-    // On small Android screens the keyboard covers the button.
-    if (driver.isAndroid && (await driver.isKeyboardShown())) await driver.hideKeyboard();
+    await dismissKeyboard();
     await this.loginButton.click();
   }
 
